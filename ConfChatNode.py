@@ -84,7 +84,8 @@ class ChatNode(Node):
 
     # HELPERS FOR SENDING MESSAGES (adds unique IDs)
     def send_json(self, obj: dict):
-        obj["id"] = str(uuid.uuid4())     # unique message ID
+        # unique message ID
+        obj["id"] = str(uuid.uuid4())     
         raw = json.dumps(obj)
         self.send_to_nodes(raw)
 

@@ -46,17 +46,17 @@ class ChatNode(Node):
             print(f"[{connected_node.id}] {message}")
             return
 
-        # 1. Deduplicate using ID
+        # Deduplicate using ID
         msg_id = message.get("id")
         if msg_id in self.seen_messages:
             return
         self.seen_messages.add(msg_id)
 
-        # 2. Forward (gossip) message
+        # Forward (gossip) message
         forward_raw = json.dumps(message)
         self.send_to_nodes(forward_raw)
 
-        # 3. Process message locally
+        # Process message locally
         mtype = message.get("type")
         sender = message.get("from")
 

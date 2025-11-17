@@ -1,5 +1,6 @@
 import json
 import uuid
+import sys
 from p2pnetwork.node import Node
 
 class ChatNode(Node):
@@ -21,18 +22,14 @@ class ChatNode(Node):
         print(f"[STARTED] {self.username} listening on {host}:{port}")
         print("Type /help for commands.")
 
-    # ----------------------------------------------------
     # Prevent library from printing dicts
-    # ----------------------------------------------------
     def decode_data(self, data):
         try:
             return json.loads(data)
         except:
             return data
 
-    # ----------------------------------------------------
     # P2P CALLBACKS
-    # ----------------------------------------------------
     def inbound_node_connected(self, connected_node):
         print(f"[CONNECTED IN] {connected_node.id} connected to me.")
 
@@ -42,32 +39,24 @@ class ChatNode(Node):
     def node_disconnected(self, connected_node):
         print(f"[DISCONNECTED] {connected_node.id}")
 
-    # ----------------------------------------------------
     # MAIN MESSAGE HANDLER + FORWARDING (GOSSIP MESH)
-    # ----------------------------------------------------
     def node_message(self, connected_node, message):
         # message is either dict or plain string
         if not isinstance(message, dict):
             print(f"[{connected_node.id}] {message}")
             return
 
-        # ---------------------------
         # 1. Deduplicate using ID
-        # ---------------------------
         msg_id = message.get("id")
         if msg_id in self.seen_messages:
             return
         self.seen_messages.add(msg_id)
 
-        # ---------------------------
         # 2. Forward (gossip) message
-        # ---------------------------
         forward_raw = json.dumps(message)
         self.send_to_nodes(forward_raw)
 
-        # ---------------------------
         # 3. Process message locally
-        # ---------------------------
         mtype = message.get("type")
         sender = message.get("from")
 
@@ -75,27 +64,25 @@ class ChatNode(Node):
         if sender == self.username:
             return
 
-        # ---- DIRECT MESSAGES ----
+        # DIRECT MESSAGES
         if mtype == "direct":
             if message.get("to") == self.username:
                 print(f"[DM][{sender} → you] {message.get('text')}")
             return
 
-        # ---- ROOM MESSAGES ----
+        # ROOM MESSAGES
         if mtype == "room":
             room = message.get("room")
             if room in self.rooms:
-                print(f"[ROOM:{room}][{sender}] {message.get('text')}")
+                print(f"[ROOM: {room}][{sender}] {message.get('text')}")
             return
 
-        # ---- PUBLIC ----
+        # PUBLIC
         if mtype == "chat":
             print(f"[PUBLIC][{sender}] {message.get('text')}")
             return
 
-    # ----------------------------------------------------
     # HELPERS FOR SENDING MESSAGES (adds unique IDs)
-    # ----------------------------------------------------
     def send_json(self, obj: dict):
         obj["id"] = str(uuid.uuid4())     # unique message ID
         raw = json.dumps(obj)
@@ -132,9 +119,7 @@ class ChatNode(Node):
         self.send_json(msg)
 
 
-# ----------------------------------------------------
 # MAIN LOOP
-# ----------------------------------------------------
 def start_node(host, port, connect_to=None):
     node = ChatNode(host, port)
     node.start()
@@ -219,11 +204,8 @@ def start_node(host, port, connect_to=None):
         print("[STOPPED] Node closed.")
 
 
-# ----------------------------------------------------
 # PROGRAM ENTRY
-# ----------------------------------------------------
 if __name__ == "__main__":
-    import sys
     if len(sys.argv) == 3:
         start_node(sys.argv[1], int(sys.argv[2]))
     elif len(sys.argv) == 4:

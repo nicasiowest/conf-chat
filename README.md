@@ -44,7 +44,7 @@ Type /help to see the list of commands.
 
 The commands are as followed:
 
-/username <name>     - set your username
+/username "name"     - set your username
 
 /msg "user" "text"      - send direct/private message
 

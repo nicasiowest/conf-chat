@@ -42,12 +42,19 @@ While running you are able to see a variety of commands.
 Type /help to see the list of commands.
 
 The commands are as followed:
+
 /username <name>        - set your username
+
 /msg <user> <text>      - send direct/private message
+
 /join <room>            - join a conference/chat room
+
 /leave <room>           - leave a conference room
+
 /rooms                  - list the rooms you have joined
+
 /room <room> <text>     - send a message to the specified room
+
 /quit                   - exit
 
 Please try out these different commands and test out setting a username,

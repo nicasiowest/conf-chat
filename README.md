@@ -46,15 +46,15 @@ The commands are as followed:
 
 /username "name"      - set your username
 
-/msg <user> <text>      - send direct/private message
+/msg "user" "text"      - send direct/private message
 
-/join <room>            - join a conference/chat room
+/join "room"            - join a conference/chat room
 
-/leave <room>           - leave a conference room
+/leave "room"           - leave a conference room
 
 /rooms                  - list the rooms you have joined
 
-/room <room> <text>     - send a message to the specified room
+/room "room" "text"     - send a message to the specified room
 
 /quit                   - exit
 

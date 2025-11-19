@@ -41,6 +41,7 @@ While running you are able to see a variety of commands.
 
 Type /help to see the list of commands.
 
+
 The commands are as followed:
 
 /username <name>        - set your username
@@ -56,6 +57,7 @@ The commands are as followed:
 /room <room> <text>     - send a message to the specified room
 
 /quit                   - exit
+
 
 Please try out these different commands and test out setting a username,
 messaging other users, joining rooms, and messaging those rooms.
